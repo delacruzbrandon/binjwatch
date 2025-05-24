@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">binjwatch</string>
+
+    <string name="ic_sad_face">Sad Face Icon</string>
+    <string name="ic_hour_glass">Hour Glass Icon</string>
+
+    <string name="found_no_content">Found No Content</string>
+    <string name="loading_content">Loading Content</string>
+</resources>
