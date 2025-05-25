@@ -2,6 +2,7 @@ package com.brhdc.binjwatch.di
 
 import com.brhdc.binjwatch.data.repository.MovieRepository
 import com.brhdc.binjwatch.data.repository.MovieRepositoryImpl
+import com.brhdc.binjwatch.presentation.viewmodels.DetailsViewModel
 import com.brhdc.binjwatch.presentation.viewmodels.HomeViewModel
 import com.brhdc.binjwatch.util.Constants.API_KEY
 import com.brhdc.binjwatch.util.Constants.BASE_URL
@@ -11,6 +12,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
 val appModule = module {
     single {
         OkHttpClient.Builder()
@@ -42,7 +44,6 @@ val appModule = module {
         MovieRepositoryImpl(get())
     }
 
-    viewModel {
-        HomeViewModel(get())
-    }
+    viewModel { HomeViewModel(get()) }
+    viewModel { DetailsViewModel(get()) }
 }

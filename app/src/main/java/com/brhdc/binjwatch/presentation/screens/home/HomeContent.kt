@@ -1,6 +1,5 @@
 package com.brhdc.binjwatch.presentation.screens.home
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,10 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -33,23 +30,33 @@ import com.brhdc.binjwatch.util.RequestState
 
 
 @Composable
-fun HomeContent(movieListState: RequestState<List<Movie>>, modifier: Modifier = Modifier) {
+fun HomeContent(
+    movieListState: RequestState<List<Movie>>,
+    onClickMovie: (movieId: String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     if (movieListState is RequestState.Success) {
         if (movieListState.data.isEmpty()) {
             EmptyScreen("Success but no data found")
         } else {
-            MovieList(movieListState.data)
+            MovieList(
+                movieList = movieListState.data,
+                onClickMovie = onClickMovie
+            )
         }
     } else if (movieListState is RequestState.Loading) {
         LoadingScreen()
-    }
-    else {
+    } else {
         EmptyScreen("Error")
     }
 }
 
 @Composable
-fun MovieList(movieList: List<Movie>, modifier: Modifier = Modifier) {
+fun MovieList(
+    movieList: List<Movie>,
+    modifier: Modifier = Modifier,
+    onClickMovie: (movieId: String) -> Unit
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = modifier,
@@ -61,15 +68,23 @@ fun MovieList(movieList: List<Movie>, modifier: Modifier = Modifier) {
         ),
         content = {
             items(movieList.size) { index ->
-                MovieItem(movieItem = movieList[index])
+                MovieItem(
+                    movieItem = movieList[index],
+                    onClickMovie = onClickMovie
+                )
             }
         },
     )
 }
 
 @Composable
-fun MovieItem(movieItem: Movie, modifier: Modifier = Modifier) {
+fun MovieItem(
+    movieItem: Movie,
+    modifier: Modifier = Modifier,
+    onClickMovie: (movieId: String) -> Unit
+) {
     Card(
+        onClick = { onClickMovie(movieItem.id.toString()) },
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
@@ -95,7 +110,6 @@ fun MovieItem(movieItem: Movie, modifier: Modifier = Modifier) {
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -119,13 +133,16 @@ fun MovieItem(movieItem: Movie, modifier: Modifier = Modifier) {
 @Composable
 fun HomeContentPreview() {
     BinjwatchTheme {
-        MovieItem(Movie(
-            id = 950387,
-            title = "A Minecraft Movie",
-            imageUrl = "/yFHHfHcUgGAxziP1C3lLt0q2T4s.jpg",
-            score = 6.527,
-            releaseDate = "2025-03-31",
-            description = "A Minecraft Movie",
-        ))
+        MovieItem(
+            Movie(
+                id = 950387,
+                title = "A Minecraft Movie",
+                imageUrl = "/yFHHfHcUgGAxziP1C3lLt0q2T4s.jpg",
+                score = 6.527,
+                releaseDate = "2025-03-31",
+                description = "A Minecraft Movie",
+            ),
+            onClickMovie = {}
+        )
     }
 }
