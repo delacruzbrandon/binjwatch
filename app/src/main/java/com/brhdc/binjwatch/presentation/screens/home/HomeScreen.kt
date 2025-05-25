@@ -24,7 +24,6 @@ fun HomeScreen(homeViewModel: HomeViewModel = koinViewModel()) {
 
     LaunchedEffect(Unit) {
         homeViewModel.fetchPopularMovies()
-        homeViewModel.triggerTestPopularMovieResponse()
     }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
